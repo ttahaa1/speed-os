@@ -1,14 +1,13 @@
-import os
 import websocket
 import ssl
+import os
 import json
 import gzip
 import requests
 from time import sleep
 import random
 import concurrent.futures
-from names import get_first_name, get_full_name, get_last_name
-from telegram import Bot
+import names
 
 counter = 0
 created = 0
@@ -17,9 +16,8 @@ failed = 0
 G = '\033[1;32m'
 R = '\033[1;31m'
 
-# Replace these lines with your Telegram token and user ID
-tele_bot = os.environ.get("TELEGRAM_BOT_TOKEN", "YOUR_DEFAULT_TELEGRAM_BOT_TOKEN")
-own_id = os.environ.get("OWN_CHAT_ID", "YOUR_DEFAULT_CHAT_ID")
+own_id = os.environ.get("OWN_ID")
+tele_bot = os.environ.get("TELE_BOT")
 
 ch = 'qwertyuioplkjhgfdsazxcvbnm1234567890'
 
@@ -27,8 +25,8 @@ def create():
     global counter
     global created
     global failed
-    user = str(random.choice([get_first_name().lower(), get_full_name().replace(' ', '').lower(),
-                              get_last_name().lower()])) + str(''.join(random.choice('1234567790') for alex in
+    user = str(random.choice([names.get_first_name().lower(), names.get_full_name().replace(' ', '').lower(),
+                              names.get_last_name().lower()])) + str(''.join(random.choice('1234567790') for alex in
                                                                      range(int(random.randint(2, 4))))) + str(
         random.choice('qwertyuioplkjhgfdsazxcvbnm')[0]) + str(
         ''.join(random.choice(ch) for i in range(int(random.randint(6, 11)))))
@@ -71,8 +69,7 @@ def create():
         message = f"Account SafeUM\nUser : {user}\nPass : hhhh\n- @speed_24_1 ~ @l_s_I_I ~ @l_s_I_I"
         with open("speed.txt", "a") as file:
             file.write(f"{user}\n")
-        bot = Bot(token=tele_bot)
-        bot.send_message(chat_id=own_id, text=message)
+        y = requests.post(f"https://api.telegram.org/bot{tele_bot}/sendmessage?chat_id={own_id}&text={message}")
     elif '"comment":"Retry"' in str(decoded_data):
         failed += 1
     else:
