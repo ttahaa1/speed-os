@@ -3,8 +3,5 @@ requests
 names
 telebot
 names
-os
-time
-gzip
 colorama
 python-telegram-bot
