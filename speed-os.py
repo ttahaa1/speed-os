@@ -1,6 +1,6 @@
+import os
 import websocket
 import ssl
-import os
 import json
 import gzip
 import requests
@@ -8,6 +8,7 @@ from time import sleep
 import random
 import concurrent.futures
 from names import get_first_name, get_full_name, get_last_name
+from telegram import Bot
 
 counter = 0
 created = 0
@@ -17,8 +18,8 @@ G = '\033[1;32m'
 R = '\033[1;31m'
 
 # Replace these lines with your Telegram token and user ID
-own_id = "5705487207"
-tele_bot = "6749189026:AAEXwP7Yxu4bs9Fvhsu4eLIkK29Cf1Lw6es"
+tele_bot = os.environ.get("TELEGRAM_BOT_TOKEN", "YOUR_DEFAULT_TELEGRAM_BOT_TOKEN")
+own_id = os.environ.get("OWN_CHAT_ID", "YOUR_DEFAULT_CHAT_ID")
 
 ch = 'qwertyuioplkjhgfdsazxcvbnm1234567890'
 
@@ -70,7 +71,8 @@ def create():
         message = f"Account SafeUM\nUser : {user}\nPass : hhhh\n- @speed_24_1 ~ @l_s_I_I ~ @l_s_I_I"
         with open("speed.txt", "a") as file:
             file.write(f"{user}\n")
-        y = requests.post(f"https://api.telegram.org/bot{tele_bot}/sendmessage?chat_id={own_id}&text={message}")
+        bot = Bot(token=tele_bot)
+        bot.send_message(chat_id=own_id, text=message)
     elif '"comment":"Retry"' in str(decoded_data):
         failed += 1
     else:
