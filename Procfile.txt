@@ -1,1 +1,1 @@
-worker: python speed-os.py
+worker: python spee.py
