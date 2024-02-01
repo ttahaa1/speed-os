@@ -6,6 +6,7 @@ import gzip
 import requests
 import random
 import concurrent.futures
+from time import sleep
 
 created = 0
 failed = 0
